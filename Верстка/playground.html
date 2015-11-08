@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+    <title>Playground</title>
+	<link rel="stylesheet" href="stylePlayground.css"/>
+</head>
+<body>
+	<h1>BUBBLES PLAYGROUND</h1>
+	
+	<canvas id='example'>Playground</canvas>
+        <script>
+            var example = document.getElementById("example"),
+			    ctx     = example.getContext('2d');
+			example.width  = 900;
+            example.height = 800;
+			var radius = 50;
+			var polyrad = 8;
+			var left_begin_i = 450;
+			var left_begin_j = 100;
+			ctx.beginPath();
+			ctx.fillStyle = "#C5CCFA";
+			ctx.arc(left_begin_i, left_begin_j, radius, 0, Math.PI * 2, true);
+			ctx.fill();
+			ctx.closePath();
+            for (i = 0; i < 10; i += 2)
+                for (j = 0; j < 10; j += 2) {
+					
+						ctx.beginPath();
+						ctx.fillStyle = "#C5CCFA";
+						ctx.arc(left_begin_i + radius*i, left_begin_j + radius*j, radius, 0, Math.PI * 2, true);		
+						ctx.fill();
+						ctx.closePath();
+					
+				}
+        </script>
+	<div id="sidebar">
+		<h2>History</h2>
+		<p> Player 1: hit 2 bubbles... </p>
+		<p> Player 2: hit 1 bubble... </p>
+	</div>
+
+	<button type="submit"; class = "btndone";>Done</button>
+</body>

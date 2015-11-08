@@ -1,0 +1,42 @@
+body {
+   background: #F0F8FF;
+   font-family: helvetica, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 25px
+}
+
+h1 {
+  text-align: center;
+}
+
+#buttonblock{
+	color: #C5CCFA;
+	text-align:right;
+}
+
+#sidebar{
+	text-align: left;
+	position: absolute;
+	width: 200px; 
+	background: #F0F8FD; 
+    top: 82px;  
+	padding: 10px; 
+}
+
+#btndone {
+    background: #C5CCFA;
+    border-style: none;
+    text-align: center;
+    font-size: 30px;
+    margin: 50px;
+	padding: 20px 40px 20px 40px;
+	text-decoration: none;
+	display: inline;
+	left: 700px;
+	right: 400px
+	bottom: 400px;
+	
+}
