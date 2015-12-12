@@ -4,11 +4,15 @@
 	<meta charset="utf-8" />
     <title>Waiting</title>
 	<link rel="stylesheet" href="styleWaiting.css"/>
+        <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
+    
+<script>  
+    var socket = io();
+</script>
 	<h1>BUBBLES</h1>
-	<label style =""> Online </label>
-	<h2> There will be a list of online players!!!</h2>
+    <div class="loghistory"> </div>
 	<div id = "buttonblock">
 		<a href="#" class="left btn">Invite</a>     
 	</div>

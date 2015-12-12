@@ -3,9 +3,15 @@
 <head>
 	<title></title>
 	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="styl.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
+
+<script>  
+    var socket = io();
+</script>
+<h1> Playground </h1>
 <div class="loghistory">
 </div>
 <div class="ball_t">
@@ -53,6 +59,6 @@
 <!-- подключение внешних скриптов -->
 <script src="jquery-2.1.4.min.js"></script>
 <script> userClick = 0; </script>
-<script src="somescriptz.js"></script>
+<script src="clickhandler.js"></script>
 </body>
 </html>

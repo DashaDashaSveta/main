@@ -17,6 +17,13 @@ label{
 	text-align:center;
 }
 
+.loghistory {
+	display: inline-block;
+	border: 1px black solid;
+	width: 200px;
+	float: left;
+}
+
 .btn {
     background: #B0E0E6;
     border-style: none;

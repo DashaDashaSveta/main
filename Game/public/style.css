@@ -6,6 +6,10 @@ body {
 
 }
 
+h1{
+    font-size: : 100px;
+}
+
 .loghistory {
 	display: inline-block;
 	border: 1px black solid;
