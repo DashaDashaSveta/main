@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+    <title>Playground</title>
+	<link rel="stylesheet" href="stylePlayground.css"/>
+	<script type="text/javascript" src="handles.js"></script>
+</head>
+<body>
+	<h1>BUBBLES PLAYGROUND</h1>
+		
+	<div id="sidebar">
+		<h2>History</h2>
+		<p> Player 1: hit 2 bubbles... </p>
+		<p> Player 2: hit 1 bubble... </p>
+	</div>
+	
+	<button type="submit"; class = "btndone"; onclick="myFunction()">Submit</button>
+	
+	<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+	<script>
+		//$('h1').text('BUBBLES PLAYGROUND FREE DOWNLOAD')
+		$('h1').on("click", function(e) {
+			var text = 'Dasha Lol';
+			
+			var el = $('<p></p>');
+			el.text(text);
+			$('#sidebar').append(el);
+		});
+	</script>
+</body>
