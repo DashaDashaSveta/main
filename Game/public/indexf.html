@@ -7,10 +7,10 @@
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-
-<script>  
-    var socket = io();
+<script> 
+    var socket= io()
 </script>
+
 <h1> Playground </h1>
 <div class="loghistory">
 </div>
@@ -55,10 +55,36 @@
 <div class="btblockg">
 	<button id="buttonclear">Очистить</button>
 	<p class="clickc">Вы кликнули <span class='clicksg'>0</span> раз</p>
+    <button id="buttonsend">Отправить другому пользователю </button>
 </div>
+    
+
+    
 <!-- подключение внешних скриптов -->
 <script src="jquery-2.1.4.min.js"></script>
 <script> userClick = 0; </script>
-<script src="clickhandler.js"></script>
+
+<script> 
+    var socket = io('http:/localhost:3000');
+    socket.on('data', function(data){
+        alert(data);
+    });
+    socket.on('userClickCircle', function(num)
+        {
+            alert('here must be alert for another user!!!');
+            $(".ball[numh='"+num+"']").css('background-color','rgb(10, 39, 108)'); 
+        });
+</script>
+
+<script>
+    $('#buttonsend').on('click', function() {
+        var msg = 'button clicked';
+        alert(userClick);
+        socket.emit('data', msg);
+        userClick = 0;
+    })
+</script>    
+   <script src="clickhandler.js"></script> 
+    
 </body>
 </html>

@@ -19,7 +19,9 @@ $('.ball_t').on('click', '.ball', function(){
 	setClickCount(userClick);
 
 	addToHist(' * вы кликнули по ' + $(this).attr('numh'));
+    alert($(this).attr('numh'))
 	$(this).css('background-color','rgb(10, 39, 47)'); // установим цвет кружка
+    socket.emit('userClickCircle',$(this).attr('numh') );
 })
 
 // при клике на кнопку очистить

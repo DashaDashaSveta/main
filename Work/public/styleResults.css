@@ -1,0 +1,33 @@
+body {
+   background: #F0F8FF;
+   color: #2F4F4F;
+   font-family: helvetica, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 64px
+}
+
+h2 {
+  text-align: center;
+  color: #4682B4;
+  margin: 40px;
+  font-size: 40px
+}
+
+label{
+	text-align: center;
+}
+
+.btn {
+    background: #B0E0E6;
+    border-style: none;
+    text-align: center;
+    color: white
+    font-size: 30px;
+    padding: 10px 20px 10px 20px;
+    margin: 50px;
+	text-decoration: none;
+	display: inline;
+}
