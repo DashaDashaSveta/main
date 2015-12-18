@@ -28,8 +28,8 @@ io.on('connection', function(socket){
   socket.clientid = clientid;
   clientid++;
     
-  console.log('a user connected');
-  console.log('user id:' + socket.id);
+  console.log('a user connected: ' + socket.id);
+
 
   socket.on('data', function(data) {
     socket.broadcast.emit('data', data)
@@ -37,6 +37,7 @@ io.on('connection', function(socket){
     
   socket.on('disconnect', function(){
     socket.emit('user disconnected');
+    console.log('user disconected' + socket.id)
   });
     
   socket.on('usercome', function(socket){

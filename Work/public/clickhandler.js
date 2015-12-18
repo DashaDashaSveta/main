@@ -48,3 +48,12 @@ $('#buttonsend').on('click', function() {
     userClick = 0;
     setClickCount(userClick);
 })
+
+
+$('a').on('click', function() {
+    //alert(userClick);
+    socket.emit('data', userClick);
+    //alert(' i send ' +userClick);
+    userClick = 0;
+    setClickCount(userClick);
+})

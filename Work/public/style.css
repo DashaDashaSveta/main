@@ -7,10 +7,13 @@ body {
 }
 
 h1{
-    font-size: : 100px;
+    font-size: : 120px;
+    font-family:  Calibri Light; 
+    margin: auto;
+    text-align: center;
 }
 
-.loghistory {
+.loghistory {   
 	display: inline-block;
     border: 1px;
 	width: 200px;
@@ -24,16 +27,20 @@ h1{
 }
 
 .btblockg {
-	border: 1px black solid;
 	float: right;
 	display: inline-block;
 	width: 200px;
+    font-family: Calibri Light;
+    font-size: 24px;
+    margin: auto;
 }
 
 .btsend {
 	float: right;
 	display: inline-block;
 	width: 200px;
+    height: 100px;
+    position: absolute;
 }
 
 .clicksg {
@@ -57,4 +64,24 @@ h1{
 
 .ball:hover {
 	background-color: rgb(0, 150, 255);
+}
+
+.myButton {
+	background-color:rgb(72, 209, 204)     ;
+	display:inline-block;
+	cursor:pointer;
+	color:#000000;
+	font-family: Calibri Light;
+	font-size: 25px;
+	padding:16px 31px;
+	text-decoration:none;
+    max-height: 100px;
+    position: relative;
+}
+.myButton:hover {
+	background-color: rgb(0, 150, 255);
+}
+.myButton:active {
+	position:relative;
+	top:1px;
 }
