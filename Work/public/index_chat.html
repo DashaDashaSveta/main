@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title> Chat </title>
+        <script src="/jquery-2.1.4.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/client.js" defer></script>
+		<meta charset="UTF-8">
+        <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      #mes { list-style-type: none; margin: 0; padding: 0; }
+      #mes li { padding: 5px 10px; }
+      #mes li:nth-child(odd) { background: #eee; }
+    </style>
+	</head>
+	<body>
+        
+		<form id="loginform" class="unauthorized">
+			<input id="login" placeholder="Login"><br>
+			<input id="password" placeholder="Password"><br>
+			<div>(If it's not existed, it will be created)</div>           
+		</form>
+        <button id ="accept">OK</button>
+        
+		<output id="messages"></output>
+        <ul id="mes"></ul>
+        <input id="input" type="text" placeholder="Your message here..."><br>
+    
+         
+        <button id ="send">Send</button>
+	</body>
+</html>

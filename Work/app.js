@@ -3,17 +3,29 @@ var express = require('express')
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mongo = require('mongodb');
+var sessions = require('client-sessions');
 
 clientid=1;
 
-app.use(express.static('public'));
+var opts = { 
+    requestKey: 'session',
+    cookieName: 'session',
+    secret: "abcde"
+}
+app.use(sessions(opts));
 
+app.use(express.static('public'));
 
 app.get('/wait', function(req, res){
   res.sendfile(__dirname + '/public/waiting.html');
 });
 
 app.get('/', function(req, res){
+  if (req.session.user)
+      {
+          //return res.redirect('/wait');
+          console.log('session!');
+      }
   res.sendfile(__dirname + '/public/main.html');
 });
 
@@ -25,28 +37,49 @@ app.get('/fail', function(req, res){
   res.sendfile(__dirname + '/public/fail.html');
 });
 
+function parseCookies(socket) {
+    var list = {},
+        rc = socket.handshake.headers.cookie;
+    rc && rc.split(';').forEach(function( cookie ) {
+        var parts = cookie.split('=');
+        list[parts.shift().trim()] = decodeURI(parts.join('='));
+    });
+    return list;
+}
+
+userslist = []
+
 clientid = 1
 allclick = 0
 
 io.on('connection', function(socket){
+   parsed = parseCookies(socket);
+   var decoded = sessions.util.decode(opts, parsed['session']);
+    console.log('decoded: ');
+    console.log(decoded);
+    userslist.push(decoded.content.user);
+    console.log('userlist: ');
+    console.log(userslist);
     
   socket.clientid = clientid;
   clientid++;
     
   console.log('a user connected: ' + socket.id);
-
+  socket.emit('usercome', userslist);
 
   socket.on('data', function(data) {
     socket.broadcast.emit('data', data)
  });
     
   socket.on('disconnect', function(){
-    socket.emit('user disconnected');
+    //socket.emit('user disconnected');
     console.log('user disconected: ' + socket.id)
+    //userslist.pop(socket.id);
+    //socket.emit('usercome', userslist);
   });
     
   socket.on('usercome', function(socket){
-      socket.emit('usercome', socket.id);
+    socket.emit('usercome', userslist);
   });
     
 
@@ -93,8 +126,10 @@ app.post('/signup', function(req, res, next) {
         console.log('try to insert to the database ');
         if (err)
             return res.redirect('/fail');
+        req.session.user = user;
         res.redirect('/wait');
     });
+    
 });
 
 app.post('/signin', function(req, res, next) {
@@ -111,6 +146,7 @@ app.post('/signin', function(req, res, next) {
             return res.redirect('/fail');
         if (item.passwd != passwd)
             return res.redirect('/fail');
+        req.session.user = user;
         res.redirect('/wait');
     });
 });

@@ -19,9 +19,12 @@
     <ul id="messages"></ul>
 <script src="jquery-2.1.4.min.js"></script>
 <script> 
-        var socket = io();
-            socket.on('usercome', function(id){
-            $('#messages').append($('<li>').text(id));
+       var socket = io("http://localhost:3000");
+            socket.on('usercome', function(ids){
+                alert(ids);
+                //$('#messages').html('');
+                for(String id : ids){
+                $('#messages').append($('<li>').text(id));}
             });
 
             socket.on('data', function(data) {
