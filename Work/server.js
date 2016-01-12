@@ -7,10 +7,9 @@ var assert = require('assert');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
-    console.log('i am working')
+    console.log('I am working')
     res.sendfile(__dirname + '/public/index_chat.html');
 });
-
 
 // создаем сервер
 var WebSocketServer = require('ws').Server,
@@ -25,8 +24,7 @@ var userListDB, chatDB;
 // подсоединяемся к БД
 MongoClient.connect('mongodb://127.0.0.1:27017', function (err, db) {
 	if (err) {throw err}
-	
-	// записываем ссылки на таблицы (коллекции) в глобальные переменные
+	// таблицы в БД
 	userListDB = db.collection('users');
 	chatDB = db.collection('chat');
     /*assert.equal(null, err);
@@ -42,21 +40,19 @@ var removeData = function(db, callback) {
    });
 };
 
-
-// проверка пользователя на предмет существования в базе данных
+// проверка пользователя есть он или нет в базе данных
 function existUser (user, callback) {
     console.log('checking if it is exicting');
 	userListDB.find({login: user}).toArray(function (error, list) {
 		callback (list.length !== 0);
 	});
 }
-// эта функция отвечает целиком за всю систему аккаунтов
 function checkUser (user, password, callback) {
 	// проверяем, есть ли такой пользователь
 	existUser(user, function (exist) {
 		// если пользователь существует
 		if (exist) {
-			// то найдем в БД записи о нем
+			// поиск в БД
 			userListDB.find({login: user}).toArray(function (error, list) {
                 console.log('finding user ' + user);
 				// проверяем пароль
@@ -69,7 +65,6 @@ function checkUser (user, password, callback) {
 				if (err) {throw err}
                 console.log(user + password)
 			});
-			// не запрашиваем авторизацию, пускаем сразу
 			callback (true);
 		}
 	});
@@ -77,10 +72,8 @@ function checkUser (user, password, callback) {
 
 // функция отправки сообщения всем
 function broadcast (by, message) {
-	
-	// запишем в переменную, чтоб не расходилось время
 	var time = new Date().getTime();
-	console.log('sending time :' + message);
+	console.log('sending time :' + time);
 	// отправляем по каждому соединению
 	peers.forEach (function (ws) {
 		ws.send (JSON.stringify ({
@@ -90,7 +83,6 @@ function broadcast (by, message) {
 			time: time
 		}));
 	});
-	
 	// сохраняем сообщение в истории
 	chatDB.insert ({message: message, from: by, time: time}, {w:1}, function (err) {
         console.log('insert mes into db');
@@ -101,73 +93,55 @@ function broadcast (by, message) {
 // при новом соединении 
 wss.on('connection', function (ws) {	
     console.log('connected');
-	// проинициализируем переменные
 	var login = '';
 	var registered = false;
-	
 	// при входящем сообщении
 	ws.on('message', function (message) {
-		// получаем событие в пригодном виде
 		var event = JSON.parse(message);
-		
-		// если человек хочет авторизироваться, проверим его данные
+		//  проверим данные
 		if (event.type === 'authorize') {
             console.log('auth');
             console.log('event');
             console.log(event);
 			// проверяем данные
 			checkUser(event.user, event.password, function (success) {
-				// чтоб было видно в другой области видимости
 				registered = success;
-				
-				// подготовка ответного события
-				var returning = {type:'authorize', success: success};
-				
+				// ответ
+				var returning = {type:'authorize', success: success};			
 				// если успех, то
 				if (success) {
-                    console.log('success auth')
-					// добавим к ответному событию список людей онлайн
-					returning.online = lpeers;
-					
-					// добавим самого человека в список людей онлайн
+                    console.log('success auth');
+					returning.online = lpeers;					
 					lpeers.push (event.user);
-					
-					// добавим ссылку на сокет в список соединений
+                    //оповещаем о новом юзере
+					var strmes = '---> ' + event.user;
+                    broadcast('system', strmes);
+                    
 					peers.push (ws);
-					
-					// чтобы было видно в другой области видимости
 					login = event.user;
-					
 					//  если человек вышел
 					ws.on ('close', function () {
 						peers.exterminate(ws);
 						lpeers.exterminate(login);
 					});
 				}
-				
-				// ну и, наконец, отправим ответ
-				ws.send (JSON.stringify(returning));
-			
-				// отправим старые сообщения новому участнику
+                //ответ
+				ws.send (JSON.stringify(returning));      
+				//старые сообщения новому участнику
 				if (success) {
                     console.log('new mes to new user');
-					sendNewMessages(ws);
+					sendNewMessages(ws); 
 				}
 			});
 		} else {
-			// если человек не авторизирован, то игнорим его
 			if (registered) {
-				// проверяем тип события
 				switch (event.type) {
-					// если просто сообщение
 					case 'message':
+                        //отправляем сообщение
                         console.log('broadcasting message ' + event.message);    
-						// рассылаем его всем
 						broadcast (login, event.message)
 						break;
-					// если сообщение о том, что он печатает сообщение
 					case 'type':
-						// то пока я не решил, что делать в таких ситуациях
 						break;
 				}	
 			}
@@ -191,10 +165,12 @@ function sendNewMessages (ws) {
 	});
 }
 
-// убрать из массива элемент по его значению
+//вспомогательная
 Array.prototype.exterminate = function (value) {
 	this.splice(this.indexOf(value), 1);
 }
+
+//сервер
 http.listen(8030, function(){
   console.log('listening on *:8030');
 });

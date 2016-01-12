@@ -1,0 +1,117 @@
+body {
+	background-image: url(background.png);
+	margin: 0;
+	padding: 0;
+    font-family: Verdana, Helvetica, Arial, sans-serif;
+}
+
+nav {
+	box-shadow: 0 0 10px rgb(0, 0, 0);
+    background-color: #333;
+}
+
+.hr {
+	background-color: rgba(0, 0, 0, 0.3);
+	margin: 20px 10px;
+	height: 1px;
+}
+
+#loginform {
+	text-align: center;
+	margin-top: 15px;
+	padding: 5px;
+}
+
+#login {
+	border: 1px solid #4CAF50;
+	border-bottom: none;
+	border-radius: 5px 5px 0 0;
+	padding: 4px 6px;
+	margin-left: calc(50% - 100px);
+	margin-bottom: 0;
+	display: block;
+	height: 20px;
+	width: 200px;
+}
+
+#password {
+	border: 1px solid #4CAF50;
+	border-radius: 0 0 5px 5px;
+	padding: 4px 6px;
+	margin-left: calc(50% - 100px);
+	margin-bottom: 0;
+	display: block;
+	height: 20px;
+	width: 200px;
+}
+
+#error_message {
+	margin: 10px;
+}
+
+#accept {
+	margin-left: calc(50% - 25px);
+	margin-bottom: 0;
+	display: block;
+	height: 25px;
+	width: 50px;
+}
+
+#message_text {
+	border: 1px solid #4CAF50;
+	border-radius: 5px 5px 5px 5px;
+	padding: 4px 6px;
+	margin-left: calc(50% - 100px);
+	margin-bottom: 10px;
+	display: block;
+	height: 50px;
+	width: 200px;
+    margin-top: 10px;
+}
+
+#send {
+	margin-left: calc(50% - 25px);
+	margin-bottom: 0;
+	display: block;
+	height: 25px;
+	width: 50px;	
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #4CAF50;
+}
+
+#mes {
+ list-style-type: none;
+ margin: 0;
+ padding: 0;
+font-family: sans-serif;
+    
+}
+
+#mes li {
+ padding: 5px 10px;
+}
+
+#mes li:nth-child(odd) {
+ background: #eee;
+}
