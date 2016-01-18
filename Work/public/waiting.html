@@ -19,8 +19,8 @@
     <ul id="messages"></ul>
 <script src="jquery-2.1.4.min.js"></script>
 <script> 
-       var socket = io("http://localhost:3000");
-            socket.on('usercome', function(ids){
+       var socket = io();
+            socket.emit('usercome', function(ids){
                 alert(ids);
                 //$('#messages').html('');
                 for(String id : ids){

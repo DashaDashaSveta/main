@@ -7,6 +7,7 @@ var sessions = require('client-sessions');
 
 clientid=1;
 
+//здесь options для сессии
 var opts = { 
     requestKey: 'session',
     cookieName: 'session',
@@ -14,12 +15,15 @@ var opts = {
 }
 app.use(sessions(opts));
 
+//подключаем статические файлы  
 app.use(express.static('public'));
 
+//на страницу ожидания
 app.get('/wait', function(req, res){
   res.sendfile(__dirname + '/public/waiting.html');
 });
 
+//на главную страницу
 app.get('/', function(req, res){
   if (req.session.user)
       {
@@ -29,14 +33,17 @@ app.get('/', function(req, res){
   res.sendfile(__dirname + '/public/main.html');
 });
 
+//на страницу плэйграунда
 app.get('/play', function(req, res){
   res.sendfile(__dirname + '/public/indexf.html');
 });
 
+//если фэйлануться
 app.get('/fail', function(req, res){
   res.sendfile(__dirname + '/public/fail.html');
 });
 
+//парсим куки от браузера
 function parseCookies(socket) {
     var list = {},
         rc = socket.handshake.headers.cookie;
@@ -44,7 +51,9 @@ function parseCookies(socket) {
         var parts = cookie.split('=');
         list[parts.shift().trim()] = decodeURI(parts.join('='));
     });
+    console.log(list);
     return list;
+    
 }
 
 userslist = []
@@ -52,7 +61,9 @@ userslist = []
 clientid = 1
 allclick = 0
 
+//когда коннектится юзер, приходит сокет и мы с ним работаем    
 io.on('connection', function(socket){
+    console.log('connection!');
    parsed = parseCookies(socket);
    var decoded = sessions.util.decode(opts, parsed['session']);
     console.log('decoded: ');
@@ -114,6 +125,7 @@ MongoClient.connect(mongo_connection, function(err, database) {
     });
 })
 
+//зарегаться
 app.post('/signup', function(req, res, next) {
     var collection = db.collection("users");
     var user = req.body.user || "";
@@ -132,6 +144,7 @@ app.post('/signup', function(req, res, next) {
     
 });
 
+//войти
 app.post('/signin', function(req, res, next) {
     var collection = db.collection("users");
     var user = req.body.user || "";

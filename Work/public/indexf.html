@@ -64,12 +64,11 @@
 <script> allClicks = 0;</script>
 
 <script> 
-    var socket = io("http://localhost:3000");
+    var socket = io();
     socket.on('data', function(data){
         //alert("Another user hit " + data + " bubbles");
     })
-    
-    
+  
     socket.on('userClickCircle', function(num, all){
             allClicks++;
          $(".ball[numh='"+num+"']").css('background-color','rgb(255,255,255)'); 
