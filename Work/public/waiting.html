@@ -20,14 +20,37 @@
 <script src="jquery-2.1.4.min.js"></script>
 <script> 
        var socket = io();
-            socket.emit('usercome', function(ids){
-                alert(ids);
-                //$('#messages').html('');
-                for(String id : ids){
-                $('#messages').append($('<li>').text(id));}
+        var this_user_name = "";
+            socket.on('usercome', function(ids){
+                arrayLength = ids.length;
+                $('#messages').html('');
+                
+                ids.forEach(function(id){ //отображение списка онлайн-игроков
+                    $('#messages').append($('<li>').text(id.user).data('socket', id.socket));
+                    if (id.socket == socket.id){
+                        this_user_name = id.user;
+                    }
+                })
+
+                $("#messages li").on('click', function(){
+                    //приглашение - по щелчку на список
+                    id = $(this).text();
+                    socket_id = $(this).data('socket');
+                    alert(socket.id);
+                    if (socket.id != socket_id){
+                        //отправляем на сервер пару сокет/имя связанных юзеров
+                        var pair = {'from': socket.id, 'to': socket_id, 'id_to' : this_user_name, 'id_from':id };
+                        socket.emit('invite', pair);
+                    }
+                    else alert('Please, chose another user'); //здесь если он выбрал себя
+                })
+            });
+    
+            socket.on('invite_message', function(mes){
+                alert(mes);      //переделать - сделать нее алерт, а окошко с confirm - да или нет. Если же да - запрос на сервер, на сервере                                      //добавляем пару в массив играющих юзеров, это для проверки, чтобы не вызывался уже играющий игрок  
             });
 
-            socket.on('data', function(data) {
+            socket.on('data', function(data) { //wtf скорее всего тестовая фигня какая-то
                 alert(data)
             });
 </script>

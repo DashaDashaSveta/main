@@ -57,6 +57,7 @@ function parseCookies(socket) {
 }
 
 userslist = []
+handledlist = [] //сюда складываем играющих пользователей, пока не используется
 
 clientid = 1
 allclick = 0
@@ -68,43 +69,45 @@ io.on('connection', function(socket){
    var decoded = sessions.util.decode(opts, parsed['session']);
     console.log('decoded: ');
     console.log(decoded);
-    userslist.push(decoded.content.user);
+    //userslist.push(decoded.content.user);
     console.log('userlist: ');
+    var struct_user = { 'user': decoded.content.user, 'socket': socket.id}
+    userslist.push(struct_user); //массив онлайн-юзеров
     console.log(userslist);
     
   socket.clientid = clientid;
   clientid++;
     
   console.log('a user connected: ' + socket.id);
-  socket.emit('usercome', userslist);
+  io.emit('usercome', userslist); //рассылка обновленного списка онлайн игроков
 
-  socket.on('data', function(data) {
+  socket.on('data', function(data) { //wtf, это что-то тестовое
     socket.broadcast.emit('data', data)
  });
     
-  socket.on('disconnect', function(){
-    //socket.emit('user disconnected');
-    console.log('user disconected: ' + socket.id)
-    //userslist.pop(socket.id);
-    //socket.emit('usercome', userslist);
+  socket.on('disconnect', function(){ //если юзер уходит
+    console.log('user disconected: ' + socket.id);
+    userslist.pop(socket.id);
+    io.emit('usercome',userslist);
   });
     
   socket.on('usercome', function(socket){
     socket.emit('usercome', userslist);
+  
   });
     
+  socket.on('invite', function (pair){ //приходит от одного клиента id сокета другого и мы отправляем приглашалку другому
+      socket.broadcast.to(pair.to).emit('invite_message', 'hello from ' + pair.id_to); // в pair лежат id сокетов двух пользователей + их имена
+  })
 
-  socket.on('userClickCircle', function(nmb, all) {
-      if (all < 25)
-          {
+  socket.on('userClickCircle', function(nmb, all) { //игра
+      if (all < 25){
             socket.broadcast.emit('userClickCircle', nmb)
           }
-      else
-          {
+      else {
               socket.broadcast.emit('end',' You win :)');
-              socket.emit('end', 'You lose :(')
-          }
-    });
+              socket.emit('end', 'You lose :(');}
+   });
     
 });
 
