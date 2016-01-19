@@ -96,8 +96,18 @@ io.on('connection', function(socket){
   
   });
     
-  socket.on('invite', function (pair){ //приходит от одного клиента id сокета другого и мы отправляем приглашалку другому
-      socket.broadcast.to(pair.to).emit('invite_message', 'hello from ' + pair.id_to); // в pair лежат id сокетов двух пользователей + их имена
+  socket.on('invite', function (pair){ //приходит от одного клиента id сокета другого и ы отправляем приглашалку другому
+      socket.broadcast.to(pair.to).emit('invite_message', pair,'Вас приглашает юзер ' + pair.id_to + '. Принять приглашение?'); // в pair лежат id сокетов двух пользователей + их имена
+	 console.log('Вас приглашает юзер ' + pair.id_to + '. Принять приглашение?');
+  })
+  
+  socket.on('invite_accepted', function(pair){
+	  handledlist.push(pair);
+	  console.log(pair.from + ' and ' + pair.to);
+	  io.to(pair.to).emit('redirect', pair);
+	  console.log('send redirect to ' + pair.from+pair.to);
+	  io.to(pair.from).emit('redirect', pair);
+	  console.log('send redirect from ' + pair.from+pair.to);
   })
 
   socket.on('userClickCircle', function(nmb, all) { //игра
@@ -139,8 +149,10 @@ app.post('/signup', function(req, res, next) {
     
     collection.insertOne({'user': user, 'passwd': passwd}, function(err, result) {
         console.log('try to insert to the database ');
-        if (err)
+        if (err) {
+			console.log(err);
             return res.redirect('/fail');
+		}
         req.session.user = user;
         res.redirect('/wait');
     });
