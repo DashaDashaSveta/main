@@ -46,8 +46,8 @@
                 })
             });
     
-            socket.on('invite_message', function(pair,mes){
-				var result = confirm(mes);
+            socket.on('invite_message', function(pair){
+				var result = confirm('Вас приглашает юзер ' + pair.id_to + '. Принять приглашение?');
 				if (result){
 					socket.emit('invite_accepted', pair);
 					alert('Я молодец, я отправил сокет');
@@ -56,16 +56,16 @@
 				else{
 					alert('Вы отклонили предложение от '+pair.from);
 					}
-                //alert(mes);      //переделать - сделать нее алерт, а окошко с confirm - да или нет. Если же да - запрос на сервер, на сервере                                      //добавляем пару в массив играющих юзеров, это для проверки, чтобы не вызывался уже играющий игрок  
             });
 			
 			socket.on('redirect', function(data){
-			alert('ща как редирекнусь!');
-			alert(data);
-				window.location.replace('/play?detail='+data.from+data.to);
-                socket.emit('newroom', data);
-			})
+                    alert('ща как редирекнусь!');
+			        alert(data);
+				    window.location.replace('/play?detail='+data.from+data.to);
+                //socket.emit('newroom', data);
+			});
 
+           
             socket.on('data', function(data) { //wtf скорее всего тестовая фигня какая-то
                 alert(data)
             });

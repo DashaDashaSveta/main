@@ -93,13 +93,17 @@ io.on('connection', function(socket){
     
   socket.on('usercome', function(socket){
     socket.emit('usercome', userslist);
-  
   });
     
+  /*socket.on('newroom', function(connected_pair){
+      handledlist.push(connected_pair);
+      console.log('pair ' + connected_pair.id_to + ' and ' + connected_pair.id_from + ' is on the handled list');
+  })*/
+    
   socket.on('invite', function (pair){ //приходит от одного клиента id сокета другого и ы отправляем приглашалку другому
-      socket.broadcast.to(pair.to).emit('invite_message', pair,'Вас приглашает юзер ' + pair.id_to + '. Принять приглашение?'); // в pair лежат id сокетов двух пользователей + их имена
+      socket.broadcast.to(pair.to).emit('invite_message', pair); // в pair лежат id сокетов двух пользователей + их имена
 	 console.log('Вас приглашает юзер ' + pair.id_to + '. Принять приглашение?');
-  })
+  });
   
   socket.on('invite_accepted', function(pair){
 	  handledlist.push(pair);
@@ -108,8 +112,15 @@ io.on('connection', function(socket){
 	  console.log('send redirect to ' + pair.from+pair.to);
 	  io.to(pair.from).emit('redirect', pair);
 	  console.log('send redirect from ' + pair.from+pair.to);
-  })
+  });
 
+ 
+  socket.on('join_game', function (data) {
+      socket.game_id = data;
+      socket.join(data);
+      console.log('these gouys join us: ' + data.id_to + ' and ' + data.id_from);
+  });
+    
   socket.on('userClickCircle', function(nmb, all) { //игра
       if (all < 25){
             socket.broadcast.emit('userClickCircle', nmb)
