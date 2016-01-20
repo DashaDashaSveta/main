@@ -81,9 +81,9 @@
     
     socket.on('end', function(msg){
         //alert(msg);
-        if (msg = 'w') {
-            window.location.replace('/win');};
-        if (msg = 'l'){
+        if (msg == 'w') {
+            window.location.replace('/win');}
+        else{
             window.location.replace('/lose');
         };
     });

@@ -121,6 +121,18 @@ io.on('connection', function(socket){
 	  console.log('send redirect to ' + pair.from+pair.to);
 	  io.to(pair.from).emit('redirect', pair);
 	  console.log('send redirect from ' + pair.from+pair.to);
+      console.log(pair);
+      for(var i = userslist.length - 1; i >= 0; i--) {
+        if(userslist[i]['socket'] === pair.to) {
+            userslist.splice(i, 1);
+        }};
+      for(var i = userslist.length - 1; i >= 0; i--) {
+        if(userslist[i]['socket'] === pair.from) {
+            userslist.splice(i, 1);
+      }};
+      console.log('---remove ' + pair.from + ' and ' + pair.to + ' from userslist');
+      console.log(userslist);
+      io.emit('usercome', userslist); 
   });
 
  
@@ -136,7 +148,7 @@ io.on('connection', function(socket){
           socket.broadcast.to(socket.game_id).emit('userClickCircle', nmb);
           }
       else {
-              socket.broadcast.emit('end','w');
+              socket.broadcast.to(socket.game_id).emit('end','w');
               socket.emit('end', 'l');}
    });
     
