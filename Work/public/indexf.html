@@ -65,7 +65,7 @@
 
 <script> 
     var socket = io();
-     socket.on('connection', function() {
+     socket.on('connect', function() {
                 socket.emit('join_game', location.search);
                 alert('me join_game '+ location.search);
             });
@@ -80,7 +80,12 @@
     });
     
     socket.on('end', function(msg){
-        alert(msg);
+        //alert(msg);
+        if (msg = 'w') {
+            window.location.replace('/win');};
+        if (msg = 'l'){
+            window.location.replace('/lose');
+        };
     });
 </script>
 

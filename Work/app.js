@@ -23,6 +23,14 @@ app.get('/wait', function(req, res){
   res.sendfile(__dirname + '/public/waiting.html');
 });
 
+app.get('/win', function(req, res){
+  res.sendfile(__dirname + '/public/end_success.html');
+});
+
+app.get('/lose', function(req, res){
+  res.sendfile(__dirname + '/public/end_lose.html');
+});
+
 //на главную страницу
 app.get('/', function(req, res){
   if (req.session.user)
@@ -58,6 +66,7 @@ function parseCookies(socket) {
 
 userslist = []
 handledlist = [] //сюда складываем играющих пользователей, пока не используется
+users_in_game = {}
 
 clientid = 1
 allclick = 0
@@ -118,16 +127,17 @@ io.on('connection', function(socket){
   socket.on('join_game', function (data) {
       socket.game_id = data;
       socket.join(data);
-      console.log('these gouys join us: ' + data.id_to + ' and ' + data.id_from);
+      console.log('these gouys join us: ' + data);
   });
     
   socket.on('userClickCircle', function(nmb, all) { //игра
       if (all < 25){
-            socket.broadcast.emit('userClickCircle', nmb)
+            //socket.broadcast.emit('userClickCircle', nmb)
+          socket.broadcast.to(socket.game_id).emit('userClickCircle', nmb);
           }
       else {
-              socket.broadcast.emit('end',' You win :)');
-              socket.emit('end', 'You lose :(');}
+              socket.broadcast.emit('end','w');
+              socket.emit('end', 'l');}
    });
     
 });
