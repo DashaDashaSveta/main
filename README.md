@@ -6,4 +6,4 @@ NodeJS + socket.io + JavaScript + HTML + CSS
 
 
 Please, do not judje us strictly :)
-It's our first web-project.
+This is our first web-project.
